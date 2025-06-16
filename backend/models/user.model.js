@@ -49,9 +49,8 @@ const userSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// 🧮 Virtual field for average rating
 userSchema.virtual('averageRating').get(function () {
-  if (!this.ratings.length) return 0;
+  if (!Array.isArray(this.ratings) || this.ratings.length === 0) return 0;
   const sum = this.ratings.reduce((a, b) => a + b, 0);
   return (sum / this.ratings.length).toFixed(2);
 });

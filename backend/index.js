@@ -1,12 +1,18 @@
 import express from 'express';
 import connectDB from './lib/db.js';
 import authRoutes from './routes/auth.route.js';
+import  projectRoutes from './routes/project.route.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/project', projectRoutes);
 
 const PORT = process.env.PORT || 3000;
 
