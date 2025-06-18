@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/auth/signup:
+ * /api/v1/auth/signup:
  *   post:
  *     summary: User signup
  *     tags: [Auth]
@@ -19,13 +19,21 @@ const router = express.Router();
  *               - name
  *               - email
  *               - password
+ *               - role
  *             properties:
  *               name:
  *                 type: string
+ *                 example: John Doe
  *               email:
  *                 type: string
+ *                 example: john@example.com
  *               password:
  *                 type: string
+ *                 example: password123
+ *               role:
+ *                 type: string
+ *                 enum: [client, freelancer, admin]
+ *                 example: freelancer
  *     responses:
  *       201:
  *         description: User created successfully
@@ -36,7 +44,7 @@ router.post("/signup", signup);
 
 /**
  * @swagger
- * /api/auth/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: User login
  *     tags: [Auth]
@@ -52,8 +60,10 @@ router.post("/signup", signup);
  *             properties:
  *               email:
  *                 type: string
+ *                 example: john@example.com
  *               password:
  *                 type: string
+ *                 example: password123
  *     responses:
  *       200:
  *         description: Login successful
@@ -64,7 +74,7 @@ router.post("/login", login);
 
 /**
  * @swagger
- * /api/auth/logout:
+ * /api/v1/auth/logout:
  *   post:
  *     summary: User logout
  *     tags: [Auth]
