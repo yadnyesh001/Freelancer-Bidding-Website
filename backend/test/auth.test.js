@@ -5,7 +5,6 @@ import app from "../index.js";
 import User from "../models/user.model.js";
 import dotenv from "dotenv";
 
-// Load test env
 dotenv.config({ path: ".env.test" });
 
 let mongoServer;
@@ -16,13 +15,16 @@ beforeAll(async () => {
   await mongoose.connect(uri, { dbName: "test" });
 });
 
+afterEach(async () => {
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    await collections[key].deleteMany();
+  }
+});
+
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
-});
-
-afterEach(async () => {
-  await User.deleteMany();
 });
 
 describe("Auth Routes", () => {
