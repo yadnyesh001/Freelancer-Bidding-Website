@@ -41,13 +41,19 @@ export const payFreelancer = async (req, res) => {
     const client = await User.findById(userId);
     const freelancer = await User.findById(freelancerId);
 
-    if (!client || !freelancer)
+    if (!client || !freelancer) {
       return res
-        .status(404)
-        .json({ message: "Client or freelancer not found" });
+      .status(404)
+      .json({ message: "Client or freelancer not found" });
+    }
 
-    if (client.wallet < amount)
+    if (client.wallet < amount) {
       return res.status(400).json({ message: "Insufficient wallet balance" });
+    }
+
+    if (freelancerId === userId.toString()) {
+      return res.status(400).json({ message: "Cannot pay yourself" });
+    }
 
     client.wallet -= amount;
     freelancer.wallet += amount;
