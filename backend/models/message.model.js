@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-  job: {
+  project: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Job",
+    ref: "Project",
     required: true
   },
   sender: {
@@ -16,28 +16,10 @@ const messageSchema = new mongoose.Schema({
     ref: "User",
     required: true
   },
-  text: {
+  message: {
     type: String,
-    required: function () {
-      return this.messageType === "text";
-    }
+    required: true
   },
-  messageType: {
-    type: String,
-    enum: ["text", "image", "file"],
-    default: "text"
-  },
-  fileUrl: {
-    type: String
-  },
-  read: {
-    type: Boolean,
-    default: false
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false
-  }
 }, {
   timestamps: true
 });
