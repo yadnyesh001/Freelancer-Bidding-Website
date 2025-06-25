@@ -36,7 +36,6 @@ export const restrictTo = (...roles) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      console.log(`Access denied: User ${req.user._id} (${req.user.role}) tried accessing a restricted route.`);
       return res.status(403).json({
         error: `Access denied. Required roles: ${roles.join(', ')}.`,
       });

@@ -7,9 +7,6 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
-  awardProject,
-  unawardProject,
-  closeProject,
   markProjectComplete,
   confirmProjectCompletion,
 } from "../controllers/project.controller.js";

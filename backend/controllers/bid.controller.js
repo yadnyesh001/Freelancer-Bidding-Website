@@ -180,8 +180,6 @@ export const deleteBid = async (req, res) => {
     }
 
     await bid.deleteOne();
-
-    console.log(`✅ Bid ${bidId} deleted by freelancer ${req.user._id}`);
     res.status(200).json({
       message: "Bid deleted successfully",
     });
