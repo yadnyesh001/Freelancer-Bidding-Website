@@ -121,3 +121,78 @@ export const deleteProject = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+export const closeProject = async (req, res) => {
+  try {
+    const { projectId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      return res.status(400).json({ message: 'Invalid project ID' });
+    }
+
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { status: 'closed' },
+      { new: true }
+    );
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({ message: 'Project closed successfully', project });
+  } catch (error) {
+    console.log("Error in closeProject:", error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+export const markProjectComplete = async (req, res) => {
+  try {
+    const { projectId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      return res.status(400).json({ message: 'Invalid project ID' });
+    }
+
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { status: 'completed' },
+      { new: true }
+    );
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({ message: 'Project marked as complete', project });
+  } catch (error) {
+    console.log("Error in markProjectComplete:", error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+export const confirmProjectCompletion = async (req, res) => {
+  try {
+    const { projectId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      return res.status(400).json({ message: 'Invalid project ID' });
+    }
+
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { status: 'confirmed' },
+      { new: true }
+    );
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({ message: 'Project completion confirmed', project });
+  } catch (error) {
+    console.log("Error in confirmProjectCompletion:", error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}

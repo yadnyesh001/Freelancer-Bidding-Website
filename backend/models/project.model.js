@@ -56,7 +56,7 @@ const projectSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ['open', 'in-progress', 'completed', 'cancelled'],
+      enum: ['open', 'in-progress', 'pending-review', 'completed', 'cancelled'],
       default: 'open',
     },
   },

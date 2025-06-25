@@ -7,6 +7,11 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
+  awardProject,
+  unawardProject,
+  closeProject,
+  markProjectComplete,
+  confirmProjectCompletion,
 } from "../controllers/project.controller.js";
 import { protect, restrictTo } from "../middlewares/auth.middleware.js";
 
@@ -19,5 +24,7 @@ router.get("/my-awarded", protect, restrictTo("freelancer"), getMyAwardedProject
 router.get("/:id", protect, getProjectById);
 router.patch("/:id", protect, restrictTo("client"), updateProject);
 router.delete("/:id", protect, restrictTo("client"), deleteProject);
+router.patch("/:id/mark-complete", protect, restrictTo("freelancer"), markProjectComplete);
+router.patch("/:id/confirm-completion", protect, restrictTo("client"), confirmProjectCompletion);
 
 export default router;

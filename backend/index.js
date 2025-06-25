@@ -5,6 +5,7 @@ import projectRoutes from './routes/project.route.js';
 import bidRoutes from './routes/bid.route.js';
 import transactionRoutes from './routes/transaction.route.js';
 import messageRoutes from './routes/message.route.js';
+import reviewRoutes from './routes/review.route.js';
 
 import { swaggerUi, swaggerSpec } from "./config/swagger.config.js";
 import dotenv from 'dotenv';
@@ -24,5 +25,6 @@ app.use('/api/v1/project', projectRoutes);
 app.use('/api/v1/bid', bidRoutes);
 app.use('/api/v1/transaction', transactionRoutes);
 app.use('/api/v1/message', messageRoutes);
+app.use('/api/v1/review', reviewRoutes);
 
 export default app;
