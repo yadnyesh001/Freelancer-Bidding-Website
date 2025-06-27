@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "bun run --watch server.js",
+    "start": "node server.js",
     "test": "NODE_ENV=test jest --detectOpenHandles --forceExit"
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "type": "module",
   "keywords": [],
