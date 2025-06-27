@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://solo-grind-iota.vercel.app/",
+    origin: "https://solo-grind-iota.vercel.app",
     credentials: true,
   })
 );
