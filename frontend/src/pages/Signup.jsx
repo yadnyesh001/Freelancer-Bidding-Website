@@ -68,7 +68,7 @@ const Signup = () => {
     setIsLoading(true)
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/auth/signup", formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/signup`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
