@@ -32,7 +32,7 @@ const router = express.Router();
  *                 example: password123
  *               role:
  *                 type: string
- *                 enum: [client, freelancer, admin]
+ *                 enum: [client, freelancer]
  *                 example: freelancer
  *     responses:
  *       201:
