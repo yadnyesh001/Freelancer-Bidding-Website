@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': 'https://sologrind.onrender.com',
+      '/': 'https://sologrind.onrender.com',
     },
   },
 })
