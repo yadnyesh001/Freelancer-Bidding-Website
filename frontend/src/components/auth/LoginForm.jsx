@@ -12,9 +12,10 @@ const LoginForm = () => {
 
   const mutation = useMutation({
     mutationFn: async (credentials) => {
-      const response = await axios.post("/api/v1/auth/login", credentials, {
-        withCredentials: true,
-      })
+      const response = await axios.post("https://sologrind.onrender.com/api/v1/auth/login", credentials, {
+  withCredentials: true,
+})
+
       return response.data
     },
     onSuccess: (data) => {
