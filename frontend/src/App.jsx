@@ -1,20 +1,18 @@
+import Layout from "./components/layout/Layout.jsx";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login.jsx";
-import Signup from "./pages/Signup.jsx";
-import Home from "./pages/Home.jsx"; 
-import Header from "../components/Header.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import SignUpPage from "./pages/auth/SignUpPage.jsx";
+import LoginPage from "./pages/auth/LoginPage.jsx";
 
 function App() {
-  return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </div>
-  );
+  return <Layout>
+    
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
+  </Layout>
 }
 
 export default App;
