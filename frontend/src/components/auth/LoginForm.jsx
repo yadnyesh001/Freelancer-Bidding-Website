@@ -1,40 +1,43 @@
-import { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: async (credentials) => {
-      const response = await axios.post("https://sologrind.onrender.com/api/v1/auth/login", credentials, {
-  withCredentials: true,
-})
-
-      return response.data
+      const response = await axios.post(
+        "https://sologrind.onrender.com/api/v1/auth/login",
+        credentials,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
     },
     onSuccess: (data) => {
-      setSuccess(data.message || "Login successful")
-      setError("")
-      setEmail("")
-      setPassword("")
-      navigate("/") // Redirect to homepage or dashboard
+      setSuccess(data.message || "Login successful");
+      setError("");
+      setEmail("");
+      setPassword("");
+      navigate("/"); // Redirect to homepage or dashboard
     },
     onError: (error) => {
-      setError(error.response?.data?.message || "Invalid credentials")
-      setSuccess("")
-    }
-  })
+      setError(error.response?.data?.message || "Invalid credentials");
+      setSuccess("");
+    },
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    mutation.mutate({ email, password })
-  }
+    e.preventDefault();
+    mutation.mutate({ email, password });
+  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
@@ -82,7 +85,7 @@ const LoginForm = () => {
         </Link>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
