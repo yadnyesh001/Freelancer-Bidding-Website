@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useMutation } from '@tanstack/react-query'
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
+import { jwtDecode } from "jwt-decode"
 
 const SignUpForm = () => {
   const [name, setName] = useState("")
@@ -10,6 +11,8 @@ const SignUpForm = () => {
   const [role, setRole] = useState("client")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+
+  const navigate = useNavigate()
 
   const mutation = useMutation({
     mutationFn: async (newUser) => {
@@ -25,6 +28,16 @@ const SignUpForm = () => {
       setEmail("")
       setPassword("")
       setRole("client")
+      localStorage.setItem("token", data.token)
+      const decoded = jwtDecode(data.token)
+      const role = decoded.role
+      if (role === "client"){
+        navigate("/client")
+      } else if (role === "freelancer") {
+        navigate("/freelancer")
+      } else {
+        navigate("/")
+      }
     },
     onError: (error) => {
       setError(error.response?.data?.message || "Something went wrong")

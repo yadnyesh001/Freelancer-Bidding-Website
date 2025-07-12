@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("")
@@ -18,11 +19,22 @@ const LoginForm = () => {
       return response.data
     },
     onSuccess: (data) => {
-      setSuccess(data.message || "Login successful")
-      setError("")
-      setEmail("")
-      setPassword("")
-      navigate("/") // Redirect to homepage or dashboard
+      setSuccess(data.message || "Login successful");
+      setError("");
+      setEmail("");
+      setPassword("");
+      localStorage.setItem("token", data.token);
+      const decoded = jwtDecode(data.token);
+      const role = decoded.role;
+      if (role === "admin") {
+        navigate("/admin");
+      } else if (role === "client") {
+        navigate("/client");
+      } else if (role === "freelancer") {
+        navigate("/freelancer");
+      } else {
+        navigate("/");
+      }
     },
     onError: (error) => {
       setError(error.response?.data?.message || "Invalid credentials")
