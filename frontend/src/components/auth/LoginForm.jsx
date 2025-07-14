@@ -2,7 +2,8 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"
+import { useAuth } from "../../AuthContext.jsx";// Import the auth context
 
 const LoginForm = () => {
   const [email, setEmail] = useState("")
@@ -10,6 +11,7 @@ const LoginForm = () => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const navigate = useNavigate()
+  const { login } = useAuth() // Use the context login method
 
   const mutation = useMutation({
     mutationFn: async (credentials) => {
@@ -23,7 +25,10 @@ const LoginForm = () => {
       setError("");
       setEmail("");
       setPassword("");
-      localStorage.setItem("token", data.token);
+      
+      // Use context login method instead of directly setting localStorage
+      login(data.token)
+      
       const decoded = jwtDecode(data.token);
       const role = decoded.role;
       if (role === "admin") {
