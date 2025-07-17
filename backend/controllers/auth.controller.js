@@ -26,7 +26,9 @@ export const signup = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -41,15 +43,19 @@ export const signup = async (req, res) => {
 
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, {
-      expiresIn: "3d",
-    });
+    const token = jwt.sign(
+      { id: newUser._id, role: newUser.role },
+      env.JWT_SECRET,
+      {
+        expiresIn: "3d",
+      },
+    );
 
     res.cookie("jwt-freelance", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      secure: env.NODE_ENV === "production",
     });
 
     res.status(201).json({
@@ -62,7 +68,6 @@ export const signup = async (req, res) => {
         role: newUser.role,
       },
     });
-
   } catch (error) {
     console.log("Error in signup:", error.message);
     res.status(500).json({ message: "Internal server error" });
@@ -92,7 +97,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, role: user.role }, env.JWT_SECRET, {
       expiresIn: "3d",
     });
 
@@ -100,7 +105,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      secure: env.NODE_ENV === "production",
     });
 
     res.status(200).json({
@@ -110,10 +115,9 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
-
   } catch (error) {
     console.log("Error in login:", error.message);
     res.status(500).json({ message: "Internal server error" });
@@ -129,3 +133,4 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
