@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import BidsOnMyProjects from "./BidsOnMyProjects"; // 🔁 Import the component
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedProjectId, setSelectedProjectId] = useState(null); // 👈 Track which project's bids are visible
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -44,13 +46,18 @@ const MyProjects = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-700">
                 <div><strong>Category:</strong> {p.category}</div>
                 <div><strong>Budget:</strong> ₹{p.budget}</div>
-                <div><strong>Status:</strong> 
+                <div>
+                  <strong>Status:</strong>
                   <span className={`ml-1 px-2 py-0.5 rounded text-white text-xs ${
-                    p.status === "open" ? "bg-green-500" :
-                    p.status === "in-progress" ? "bg-blue-500" :
-                    p.status === "completed" ? "bg-gray-500" :
-                    p.status === "pending-review" ? "bg-yellow-500" :
-                    "bg-red-500"
+                    p.status === "open"
+                      ? "bg-green-500"
+                      : p.status === "in-progress"
+                      ? "bg-blue-500"
+                      : p.status === "completed"
+                      ? "bg-gray-500"
+                      : p.status === "pending-review"
+                      ? "bg-yellow-500"
+                      : "bg-red-500"
                   }`}>
                     {p.status}
                   </span>
@@ -58,6 +65,25 @@ const MyProjects = () => {
                 <div><strong>Deadline:</strong> {new Date(p.deadline).toLocaleDateString()}</div>
                 <div><strong>Posted:</strong> {new Date(p.createdAt).toLocaleString()}</div>
               </div>
+
+              {/* 🔽 View Bids Toggle Button */}
+              <div className="mt-4">
+                <button
+                  className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                  onClick={() =>
+                    setSelectedProjectId(selectedProjectId === p._id ? null : p._id)
+                  }
+                >
+                  {selectedProjectId === p._id ? "Hide Bids" : "View Bids"}
+                </button>
+              </div>
+
+              {/* 🔽 Bids Component (Only for selected project) */}
+              {selectedProjectId === p._id && (
+                <div className="mt-4">
+                  <BidsOnMyProjects projectId={p._id} />
+                </div>
+              )}
             </div>
           ))}
         </div>

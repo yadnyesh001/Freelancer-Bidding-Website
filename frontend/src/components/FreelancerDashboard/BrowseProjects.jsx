@@ -22,7 +22,7 @@ const BrowseProjects = ({ projects }) => {
     }
 
     try {
-      const res = await axios.post(`/api/v1/bid//${projectId}`, {
+      const res = await axios.post(`/api/v1/bid/${projectId}`, {
         amount: bid.amount,
         description: bid.description,
       })
