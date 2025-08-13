@@ -1,6 +1,24 @@
 import User from "../models/user.model.js";
 import Transaction from "../models/transaction.model.js";
 
+export const getMyTransactions = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    
+    const transactions = await Transaction.find({
+      $or: [{ client: userId }, { freelancer: userId }]
+    })
+    .populate('client', 'name email')
+    .populate('freelancer', 'name email')
+    .sort({ createdAt: -1 });
+
+    res.status(200).json(transactions);
+  } catch (err) {
+    console.error("Get Transactions Error:", err);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const addFunds = async (req, res) => {
   try {
     const userId = req.user._id;

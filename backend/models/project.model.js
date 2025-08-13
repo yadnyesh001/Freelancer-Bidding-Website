@@ -59,6 +59,28 @@ const projectSchema = new mongoose.Schema(
       enum: ['open', 'in-progress', 'pending-review', 'completed', 'cancelled'],
       default: 'open',
     },
+    deliverable: {
+      description: {
+        type: String,
+        default: null,
+      },
+      files: [{
+        name: String,
+        url: String,
+        uploadedAt: {
+          type: Date,
+          default: Date.now
+        }
+      }],
+      submittedAt: {
+        type: Date,
+        default: null,
+      },
+      notes: {
+        type: String,
+        default: null,
+      }
+    },
   },
   {
     timestamps: true,

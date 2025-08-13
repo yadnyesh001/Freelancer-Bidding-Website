@@ -9,6 +9,7 @@ import {
   deleteProject,
   markProjectComplete,
   confirmProjectCompletion,
+  submitDeliverable,
 } from "../controllers/project.controller.js";
 import { protect, restrictTo } from "../middlewares/auth.middleware.js";
 
@@ -23,5 +24,6 @@ router.patch("/:id", protect, restrictTo("client"), updateProject);
 router.delete("/:id", protect, restrictTo("client"), deleteProject);
 router.patch("/:id/mark-complete", protect, restrictTo("freelancer"), markProjectComplete);
 router.patch("/:id/confirm-completion", protect, restrictTo("client"), confirmProjectCompletion);
+router.post("/:id/deliverable", protect, restrictTo("freelancer"), submitDeliverable);
 
 export default router;

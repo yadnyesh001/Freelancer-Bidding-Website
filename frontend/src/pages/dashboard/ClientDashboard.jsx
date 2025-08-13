@@ -4,16 +4,22 @@ import MyProjects from "../../components/ClientDashboard/MyProjects";
 import Messaging from "../../components/ClientDashboard/Messaging";
 import Stats from "../../components/ClientDashboard/Stats";
 import Profile from "../../components/ClientDashboard/Profile";
+import DashboardHome from "../../components/ClientDashboard/DashboardHome";
+import BidsOnMyProjects from "../../components/ClientDashboard/BidsOnMyProjects";
 
 const ClientDashboard = () => {
   const [activeTab, setActiveTab] = useState("home");
 
   const renderTab = () => {
     switch (activeTab) {
+      case "home":
+        return <DashboardHome />;
       case "post":
         return <PostProject />;
       case "projects":
         return <MyProjects />;
+      case "bids":
+        return <BidsOnMyProjects />;
       case "chat":
         return <Messaging />;
       case "stats":
@@ -21,7 +27,7 @@ const ClientDashboard = () => {
       case "profile":
         return <Profile />;
       default:
-        return <h2 className="text-xl p-4">Welcome to Client Dashboard</h2>;
+        return <DashboardHome />;
     }
   };
 
@@ -35,10 +41,11 @@ const ClientDashboard = () => {
         
         <nav className="mt-4 md:mt-6 overflow-y-auto h-[calc(100%-80px)]">
           {[
-            { key: "home", label: "Home" },
+            { key: "home", label: "Dashboard" },
             { key: "post", label: "Post Project" },
             { key: "projects", label: "My Projects" },
-            { key: "chat", label: "Messaging" },
+            { key: "bids", label: "Project Bids" },
+            { key: "chat", label: "Messages" },
             { key: "stats", label: "Statistics" },
             { key: "profile", label: "Profile" },
           ].map((item) => (
@@ -61,9 +68,10 @@ const ClientDashboard = () => {
       <div className="sm:hidden w-full bg-white shadow-sm border-b">
         <div className="flex overflow-x-auto p-2 gap-2">
           {[
-            { key: "home", label: "Home" },
+            { key: "home", label: "Dashboard" },
             { key: "post", label: "Post" },
             { key: "projects", label: "Projects" },
+            { key: "bids", label: "Bids" },
             { key: "chat", label: "Chat" },
             { key: "stats", label: "Stats" },
             { key: "profile", label: "Profile" },

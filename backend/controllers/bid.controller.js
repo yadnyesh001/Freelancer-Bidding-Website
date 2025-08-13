@@ -101,7 +101,14 @@ export const getMyBids = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const bids = await Bid.find({ freelancer: req.user._id })
-      .populate("project", "title budget deadline status")
+      .populate("project", "title budget deadline status postedBy")
+      .populate({
+        path: "project",
+        populate: {
+          path: "postedBy",
+          select: "name email"
+        }
+      })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);

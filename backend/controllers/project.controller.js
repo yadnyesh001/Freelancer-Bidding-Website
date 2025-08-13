@@ -196,3 +196,58 @@ export const confirmProjectCompletion = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+export const submitDeliverable = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, files, notes } = req.body;
+    const freelancerId = req.user._id;
+
+    console.log('Deliverable submission data:', { id, description, files, notes, freelancerId });
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid project ID' });
+    }
+
+    const project = await Project.findById(id);
+    
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    console.log('Project found:', { 
+      projectId: project._id, 
+      awardedTo: project.awardedTo, 
+      status: project.status 
+    });
+
+    // Verify the project is awarded to this freelancer
+    if (!project.awardedTo || project.awardedTo.toString() !== freelancerId.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to submit deliverable for this project' });
+    }
+
+    // Update project with deliverable
+    project.deliverable = {
+      description: description || '',
+      files: Array.isArray(files) ? files : [],
+      submittedAt: new Date(),
+      notes: notes || ''
+    };
+    
+    // Update status to pending-review
+    project.status = 'pending-review';
+    
+    await project.save();
+
+    console.log('Deliverable submitted successfully for project:', project._id);
+
+    res.status(200).json({ 
+      message: 'Deliverable submitted successfully', 
+      project 
+    });
+  } catch (error) {
+    console.log("Error in submitDeliverable:", error.message);
+    console.error("Full error:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

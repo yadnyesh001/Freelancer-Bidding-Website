@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Stats from '../../components/FreelancerDashboard/Stats.jsx'
 import MyBids from '../../components/FreelancerDashboard/MyBids.jsx'
 import AwardedProjects from '../../components/FreelancerDashboard/AwardedProjects.jsx'
@@ -6,83 +6,33 @@ import WalletCard from '../../components/FreelancerDashboard/WalletCard.jsx'
 import ChatCard from '../../components/FreelancerDashboard/ChatCard.jsx'
 import ProfileCard from '../../components/FreelancerDashboard/ProfileCard.jsx'
 import BrowseProjects from '../../components/FreelancerDashboard/BrowseProjects.jsx'
+import FreelancerHome from '../../components/FreelancerDashboard/FreelancerHome.jsx'
 import { useAuth } from '../../AuthContext.jsx'
-import axios from 'axios'
 
 const FreelancerDashboard = () => {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('home')
 
-  const [stats, setStats] = useState({ totalBids: 0, awarded: 0, earnings: 0 })
-  const [bids, setBids] = useState([])
-  const [awarded, setAwarded] = useState([])
-  const [projects, setProjects] = useState([])
-
-  useEffect(() => {
-    fetchStats()
-    fetchBids()
-    fetchAwarded()
-    fetchProjects()
-  }, [])
-
-  const fetchStats = async () => {
-    try {
-      const res = await axios.get('/api/freelancer/stats')
-      setStats(res.data)
-    } catch (err) {
-      console.error('Stats Error:', err)
-    }
-  }
-
-  const fetchBids = async () => {
-    try {
-      const res = await axios.get('/api/bids/my')
-      setBids(res.data)
-    } catch (err) {
-      console.error('Bids Error:', err)
-    }
-  }
-
-  const fetchAwarded = async () => {
-    try {
-      const res = await axios.get('/api/bids/awarded')
-      setAwarded(res.data)
-    } catch (err) {
-      console.error('Awarded Error:', err)
-    }
-  }
-
-  const fetchProjects = async () => {
-    try {
-      const res = await axios.get('/api/v1/project') // You can filter on backend if needed
-      setProjects(res.data)
-    } catch (err) {
-      console.error('Projects Error:', err)
-    }
-  }
-
   const renderTab = () => {
     switch (activeTab) {
+      case 'home':
+        return <FreelancerHome onTabChange={setActiveTab} />
       case 'bids':
-        return <MyBids bids={bids} />
+        return <MyBids />
       case 'awarded':
-        return <AwardedProjects projects={awarded} />
+        return <AwardedProjects />
+      case 'browse':
+        return <BrowseProjects />
       case 'chat':
         return <ChatCard />
       case 'wallet':
         return <WalletCard />
       case 'profile':
         return <ProfileCard />
-      case 'browse':
-        return <BrowseProjects projects={projects} />
-      case 'home':
+      case 'stats':
+        return <Stats />
       default:
-        return (
-          <div>
-            <h2 className="text-xl mb-4">Welcome, {user?.name} 👋</h2>
-            <Stats stats={stats} />
-          </div>
-        )
+        return <FreelancerHome />
     }
   }
 
@@ -96,12 +46,13 @@ const FreelancerDashboard = () => {
         
         <nav className="mt-4 md:mt-6 overflow-y-auto h-[calc(100%-80px)]">
           {[
-            { key: 'home', label: 'Home' },
-            { key: 'bids', label: 'My Bids' },
-            { key: 'awarded', label: 'Awarded Projects' },
+            { key: 'home', label: 'Dashboard' },
             { key: 'browse', label: 'Browse Projects' },
-            { key: 'chat', label: 'Chat' },
-            { key: 'wallet', label: 'Wallet' },
+            { key: 'bids', label: 'My Bids' },
+            { key: 'awarded', label: 'My Projects' },
+            { key: 'chat', label: 'Messages' },
+            { key: 'wallet', label: 'Earnings' },
+            { key: 'stats', label: 'Statistics' },
             { key: 'profile', label: 'Profile' },
           ].map((item) => (
             <button
@@ -124,11 +75,12 @@ const FreelancerDashboard = () => {
         <div className="flex overflow-x-auto p-2 gap-2">
           {[
             { key: 'home', label: 'Home' },
-            { key: 'bids', label: 'Bids' },
-            { key: 'awarded', label: 'Awarded' },
             { key: 'browse', label: 'Browse' },
+            { key: 'bids', label: 'Bids' },
+            { key: 'awarded', label: 'Projects' },
             { key: 'chat', label: 'Chat' },
-            { key: 'wallet', label: 'Wallet' },
+            { key: 'wallet', label: 'Earnings' },
+            { key: 'stats', label: 'Stats' },
             { key: 'profile', label: 'Profile' },
           ].map((item) => (
             <button

@@ -4,7 +4,7 @@ const conversationSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Project",
-    required: true
+    required: false // Make project optional for general conversations
   },
   participants: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -16,11 +16,21 @@ const conversationSchema = new mongoose.Schema({
     ref: "Message",
     default: []
   }],
+  lastMessage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Message",
+    required: false
+  },
+  lastMessageTime: {
+    type: Date,
+    default: Date.now
+  }
 }, {
   timestamps: true
 });
 
-conversationSchema.index({ project: 1, participants: 1 });
+conversationSchema.index({ participants: 1 });
+conversationSchema.index({ lastMessageTime: -1 });
 
 const Conversation = mongoose.model("Conversation", conversationSchema);
 export default Conversation;
